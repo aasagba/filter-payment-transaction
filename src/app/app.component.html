@@ -1,0 +1,5 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <div *ngFor="let item of vm.items">
+    {{ item.id }}
+  </div>
+</ng-container>

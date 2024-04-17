@@ -1,0 +1,17 @@
+# Add files here to ignore them from prettier formatting
+
+# Ignore entire folders
+dist
+node_modules
+.storybook
+.vscode
+.idea
+/.git
+.angular
+tools
+
+# Global patters to ignore
+**/*.yml
+**/.eslintrc.json
+**/*.htm
+/.nx/cache
