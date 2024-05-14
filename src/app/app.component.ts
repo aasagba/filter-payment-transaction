@@ -6,6 +6,7 @@ import { ClrDatagridModule, ClrNavigationModule } from '@clr/angular';
 import { PaymentService } from './services/payment.service';
 import { FilterComponent } from './components/filter/filter.component';
 import { FormGroup } from '@angular/forms';
+import { InfiniteScrollDirective } from './directives/infinite-scroll.directive';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { FormGroup } from '@angular/forms';
     ClrDatagridModule,
     FilterComponent,
     ClrNavigationModule,
+    InfiniteScrollDirective,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
