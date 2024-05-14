@@ -37,7 +37,7 @@ describe('PaymentService', () => {
 
     service.getPaymentTransactions().subscribe(response => {
       expect(response).toBeTruthy();
-      expect(response.currentPage).toEqual(1);
+      expect(response.pagination.currentPage).toEqual(1);
       expect(response).toEqual(expected);
     });
   });

@@ -26,7 +26,7 @@ import {
 ClarityIcons.addIcons(filterIcon, timesIcon, filterOffIcon);
 
 @Component({
-  selector: 'app-filter',
+  selector: 'app-filter-header',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -36,11 +36,11 @@ ClarityIcons.addIcons(filterIcon, timesIcon, filterOffIcon);
     ClrNavigationModule,
     ClrSelectModule,
   ],
-  templateUrl: './filter.component.html',
-  styleUrl: './filter.component.scss',
+  templateUrl: './filter-header.component.html',
+  styleUrl: './filter-header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterComponent implements OnInit {
+export class FilterHeaderComponent implements OnInit {
   @Input() status: Status[];
   @Output() applyFilter = new EventEmitter<FormGroup>();
   @Output() resetFilter = new EventEmitter();

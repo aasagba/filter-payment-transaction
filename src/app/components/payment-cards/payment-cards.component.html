@@ -1,0 +1,41 @@
+<h5>payments: {{ infinityItems?.length }}</h5>
+
+<div
+  class="cards-container"
+  appInfiniteScroll
+  (scrolled)="onInfinityScrollFired()">
+  <div class="clr-row" *ngFor="let transaction of infinityItems">
+    <div class="clr-col-lg-6 clr-col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="heading">
+            <h3>{{ transaction.id }}</h3>
+          </div>
+          <div class="label label-info">
+            <div class="tag">
+              {{ transaction.status }}
+            </div>
+          </div>
+        </div>
+        <div class="card-block">
+          <div class="card-media-block">
+            <div class="currency">
+              <h4>
+                {{ transaction.amount | currency: transaction.currency }}
+              </h4>
+            </div>
+            <div class="card-media-description">
+              <div class="card-media-title">
+                {{ transaction.description }}
+              </div>
+
+              <div class="card-media-text" style="">
+                {{ transaction.createdAt | date }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

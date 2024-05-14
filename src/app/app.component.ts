@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 import { PAGINATION_DEFAULT_SIZE, Status, VM } from './models/model';
 import { ClrDatagridModule, ClrNavigationModule } from '@clr/angular';
 import { PaymentService } from './services/payment.service';
-import { FilterComponent } from './components/filter/filter.component';
+import { FilterHeaderComponent } from './components/filter-header/filter-header.component';
 import { FormGroup } from '@angular/forms';
 import { InfiniteScrollDirective } from './directives/infinite-scroll.directive';
+import { PaymentCardsComponent } from './components/payment-cards/payment-cards.component';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,10 @@ import { InfiniteScrollDirective } from './directives/infinite-scroll.directive'
   imports: [
     CommonModule,
     ClrDatagridModule,
-    FilterComponent,
+    FilterHeaderComponent,
     ClrNavigationModule,
     InfiniteScrollDirective,
+    PaymentCardsComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

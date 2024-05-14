@@ -1,8 +1,8 @@
 <clr-main-container>
-  <app-filter
+  <app-filter-header
     [status]="status"
     (applyFilter)="onApplyFiltering($event)"
-    (resetFilter)="onResetFiltering()"></app-filter>
+    (resetFilter)="onResetFiltering()"></app-filter-header>
 
   <ng-container *ngIf="vm$ | async as vm">
     @if ((isMobileBreakpoint$ | async) === false) {
@@ -31,46 +31,9 @@
         </clr-dg-footer>
       </clr-datagrid>
     } @else {
-      <h5>payments: {{ vm.infinityItems.length }}</h5>
-      <div
-        class="cards-container"
-        appInfiniteScroll
-        (scrolled)="onInfinityScrollFired(vm)">
-        <div class="clr-row" *ngFor="let transaction of vm.infinityItems">
-          <div class="clr-col-lg-6 clr-col-12">
-            <div class="card">
-              <div class="card-header">
-                <div class="heading">
-                  <h3>{{ transaction.id }}</h3>
-                </div>
-                <div class="label label-info">
-                  <div class="tag">
-                    {{ transaction.status }}
-                  </div>
-                </div>
-              </div>
-              <div class="card-block">
-                <div class="card-media-block">
-                  <div class="currency">
-                    <h4>
-                      {{ transaction.amount | currency: transaction.currency }}
-                    </h4>
-                  </div>
-                  <div class="card-media-description">
-                    <div class="card-media-title">
-                      {{ transaction.description }}
-                    </div>
-
-                    <div class="card-media-text" style="">
-                      {{ transaction.createdAt | date }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-payment-cards
+        [infinityItems]="vm.infinityItems"
+        (infiniteScroll)="onInfinityScrollFired(vm)"></app-payment-cards>
     }
   </ng-container>
 </clr-main-container>
