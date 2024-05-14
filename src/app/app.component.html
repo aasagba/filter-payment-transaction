@@ -4,10 +4,6 @@
     (applyFilter)="onApplyFiltering($event)"
     (resetFilter)="onResetFiltering()"></app-filter>
 
-  @if (isMobileBreakpoint$ | async) {
-    is Mobile!
-  }
-
   <ng-container *ngIf="vm$ | async as vm">
     @if ((isMobileBreakpoint$ | async) === false) {
       <clr-datagrid [clrDgLoading]="loading$ | async">
@@ -35,8 +31,12 @@
         </clr-dg-footer>
       </clr-datagrid>
     } @else {
-      <div class="cards-container">
-        <div class="clr-row" *ngFor="let transaction of vm.items">
+      <h5>payments: {{ vm.infinityItems.length }}</h5>
+      <div
+        class="cards-container"
+        appInfiniteScroll
+        (scrolled)="onInfinityScrollFired(vm)">
+        <div class="clr-row" *ngFor="let transaction of vm.infinityItems">
           <div class="clr-col-lg-6 clr-col-12">
             <div class="card">
               <div class="card-header">

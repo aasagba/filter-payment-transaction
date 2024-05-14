@@ -54,6 +54,8 @@ export class AppComponent implements OnInit {
   }
 
   onApplyFiltering(form: FormGroup) {
+    this.paymentService.processingFiltering$.next(true);
+
     this.paymentService.filter$.next({
       ...this.paymentService.filter$.value,
       page: 0,
@@ -64,6 +66,12 @@ export class AppComponent implements OnInit {
   }
 
   onResetFiltering() {
+    this.paymentService.processingFiltering$.next(true);
     this.paymentService.filter$.next(null);
+  }
+
+  onInfinityScrollFired(vm: VM) {
+    const currentPage = this.paymentService.filter$.value?.page ?? 0;
+    if (vm.pagination.hasNext) this.applyPaging(currentPage + 2, vm);
   }
 }

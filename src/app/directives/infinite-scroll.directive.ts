@@ -1,5 +1,13 @@
-import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
+import {
+  DestroyRef,
+  Directive,
+  EventEmitter,
+  HostListener,
+  inject,
+  Output,
+} from '@angular/core';
 import { debounceTime, Subject } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Directive({
   selector: '[appInfiniteScroll]',
@@ -8,30 +16,23 @@ import { debounceTime, Subject } from 'rxjs';
 export class InfiniteScrollDirective {
   @Output() scrolled = new EventEmitter();
 
-  private debouncer: Subject<void> = new Subject();
+  #destroy = inject(DestroyRef);
+
+  debouncer$: Subject<void> = new Subject();
 
   constructor() {
-    console.log('infinite scroll directive');
-    // todo: add take until
-    this.debouncer
-      .pipe(debounceTime(500))
+    this.debouncer$
+      .pipe(debounceTime(500), takeUntilDestroyed(this.#destroy))
       .subscribe(() => this.scrolled.emit());
   }
 
   @HostListener('window:scroll', ['$event'])
   scrolling() {
-    const limit = Math.max(
-      document.body.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.clientHeight,
-      document.documentElement.scrollHeight,
-      document.documentElement.offsetHeight
-    );
+    const scrolledTo = window.scrollY + window.innerHeight;
+    const isReachBottom = document.body.scrollHeight - scrolledTo <= 50;
 
-    const endReached = limit === window.innerHeight + window.scrollY;
-
-    if (endReached) {
-      this.debouncer.next();
+    if (isReachBottom) {
+      this.debouncer$.next();
     }
   }
 }

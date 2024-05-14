@@ -1,7 +1,27 @@
 export interface VM {
   items: PaymentTransactionDto[];
+  infinityItems: PaymentTransactionDto[];
   pagination: PaginatedAPIResponse<PaymentTransactionDto>;
 }
+
+export const defaultPaymentTransResponse: PaginatedAPIResponse<PaymentTransactionDto> =
+  {
+    items: [],
+    currentPage: 0,
+    hasNext: false,
+    numberOfPages: 0,
+    pageSize: 0,
+    totalNumberOfItems: 0,
+  };
+
+export const defaultVM: VM = {
+  items: [],
+  infinityItems: [],
+  pagination: {
+    ...defaultPaymentTransResponse,
+    currentPage: 1,
+  },
+};
 
 export type Status =
   | 'CAPTURED'

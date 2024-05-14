@@ -6,13 +6,16 @@ import {
   distinctUntilChanged,
   map,
   of,
+  scan,
   switchMap,
   tap,
 } from 'rxjs';
 import {
   defaultFilter,
   defaultPaymentResponse,
+  defaultVM,
   PaymentTransactionFilter,
+  VM,
 } from '../models/model';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
@@ -25,6 +28,7 @@ export class PaymentService {
 
   filter$ = new BehaviorSubject<PaymentTransactionFilter | null>(defaultFilter);
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  processingFiltering$ = new BehaviorSubject<boolean>(false);
 
   readonly isMobileBreakpoint$ = this.breakpointObserver
     .observe([Breakpoints.XSmall])
@@ -51,7 +55,32 @@ export class PaymentService {
           currentPage: res.currentPage,
         },
       })),
+      scan(this.updatePages.bind(this), {
+        ...defaultVM,
+      } as VM),
       tap(() => this.loading$.next(false))
     );
+  }
+
+  private updatePages(accumulator: VM, value: VM): VM {
+    accumulator.items = value.items;
+
+    if (this.processingFiltering$.value)
+      accumulator.infinityItems = [...value.items];
+    else
+      accumulator.infinityItems = [
+        ...accumulator.infinityItems,
+        ...value.items,
+      ];
+
+    accumulator.pagination.currentPage = value.pagination.currentPage;
+    accumulator.pagination.hasNext = value.pagination.hasNext;
+    accumulator.pagination.numberOfPages = value.pagination.numberOfPages;
+    accumulator.pagination.totalNumberOfItems =
+      value.pagination.totalNumberOfItems;
+
+    if (this.processingFiltering$.value) this.processingFiltering$.next(false);
+
+    return accumulator;
   }
 }
