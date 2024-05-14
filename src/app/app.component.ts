@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
 
   vm$: Observable<VM>;
   loading$: Observable<boolean>;
+  isMobileBreakpoint$: Observable<boolean>;
 
   headers = [
     'Payment ID',
@@ -38,10 +39,11 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.vm$ = this.paymentService.getPaymentTransactions();
     this.loading$ = this.paymentService.loading$;
+    this.isMobileBreakpoint$ = this.paymentService.isMobileBreakpoint$;
   }
 
   applyPaging(page: number, vm: VM) {
-    if (vm.hasNext)
+    if (vm.pagination.hasNext)
       this.paymentService.filter$.next({
         ...this.paymentService.filter$.value,
         page: page - 1,

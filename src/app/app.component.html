@@ -4,6 +4,10 @@
     (applyFilter)="onApplyFiltering($event)"
     (resetFilter)="onResetFiltering()"></app-filter>
 
+  @if (isMobileBreakpoint$ | async) {
+    is Mobile!
+  }
+
   <ng-container *ngIf="vm$ | async as vm">
     <clr-datagrid [clrDgLoading]="loading$ | async">
       <clr-dg-column *ngFor="let head of headers">{{ head }}</clr-dg-column>
@@ -21,8 +25,8 @@
         <clr-dg-pagination
           #pagination
           [clrDgPageSize]="5"
-          [clrDgTotalItems]="vm.totalNumberOfItems"
-          [(clrDgPage)]="vm.currentPage"
+          [clrDgTotalItems]="vm.pagination.totalNumberOfItems"
+          [(clrDgPage)]="vm.pagination.currentPage"
           (clrDgPageChange)="applyPaging($event, vm)">
           {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
           {{ pagination.totalItems }} transactions

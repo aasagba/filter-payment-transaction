@@ -1,4 +1,7 @@
-export type VM = PaginatedAPIResponse<PaymentTransactionDto>;
+export interface VM {
+  items: PaymentTransactionDto[];
+  pagination: PaginatedAPIResponse<PaymentTransactionDto>;
+}
 
 export type Status =
   | 'CAPTURED'
