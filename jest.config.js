@@ -1,3 +1,5 @@
+const esModules = ['@angular', '@ngrx', '@clr', '@cds', '@lit' ];
+
 module.exports = {
     preset: 'jest-preset-angular',
     reporters: ['default'],
@@ -23,4 +25,5 @@ module.exports = {
         '/examples/*',
         '/dist/*',
     ],
+  transformIgnorePatterns: ['node_modules/(?!@angular|@cds|@clr|@lit|lit|ramda)'],
 };

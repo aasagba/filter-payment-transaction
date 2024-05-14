@@ -1,31 +1,33 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PaymentApiService } from './api/payment.api.service';
-import { catchError, Observable, of } from 'rxjs';
-import {
-  defaultPaymentResponse,
-  PaginatedAPIResponse,
-  PaymentTransactionDto,
-} from './models/model';
+import { Observable } from 'rxjs';
+import { PAGINATION_DEFAULT_SIZE, VM } from './models/model';
+import { ClrDatagridModule } from '@clr/angular';
+import { PaymentService } from './services/payment.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ClrDatagridModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  private apiService = inject(PaymentApiService);
+  private paymentService = inject(PaymentService);
 
-  vm$: Observable<PaginatedAPIResponse<PaymentTransactionDto>>;
+  vm$: Observable<VM>;
+  headers = ['ID', 'Amount', 'Currency', 'Description', 'Status', 'Created At'];
 
   ngOnInit(): void {
-    this.vm$ = this.apiService.getPayments().pipe(
-      catchError(err => {
-        console.error(`An error has occurred: ${err}`);
-        return of(defaultPaymentResponse);
-      })
-    );
+    this.vm$ = this.paymentService.getPaymentTransactions();
+  }
+
+  applyPaging(page: number, vm: VM) {
+    if (vm.hasNext)
+      this.paymentService.filter$.next({
+        ...this.paymentService.filter$.value,
+        page: page - 1,
+        size: PAGINATION_DEFAULT_SIZE,
+      });
   }
 }

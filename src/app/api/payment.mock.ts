@@ -21,7 +21,7 @@ export const mockPaymentItems: PaymentTransactionDto[] = [
 
 export const mockPaymentResponse: PaginatedAPIResponse<PaymentTransactionDto> =
   {
-    items: [],
+    items: mockPaymentItems,
     currentPage: 0,
     hasNext: true,
     numberOfPages: 1,

@@ -1,3 +1,5 @@
+export type VM = PaginatedAPIResponse<PaymentTransactionDto>;
+
 export type Status =
   | 'CAPTURED'
   | 'COMPLETED'
@@ -5,7 +7,8 @@ export type Status =
   | 'FAILED'
   | 'SETTLED';
 
-export interface PaymentTransactionRequest {
+// PaymentTransactionRequest
+export interface PaymentTransactionFilter {
   createdAtStart?: string;
   createdAtEnd?: string;
   page: number;
@@ -42,3 +45,10 @@ export const defaultPaymentResponse: PaginatedAPIResponse<PaymentTransactionDto>
     pageSize: 0,
     totalNumberOfItems: 0,
   };
+
+export const defaultFilter: PaymentTransactionFilter = {
+  page: 0,
+  size: 5,
+};
+
+export const PAGINATION_DEFAULT_SIZE = 5;

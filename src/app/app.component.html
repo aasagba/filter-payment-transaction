@@ -1,5 +1,26 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <div *ngFor="let item of vm.items">
-    {{ item.id }}
-  </div>
+  <clr-datagrid>
+    <clr-dg-column *ngFor="let head of headers">{{ head }}</clr-dg-column>
+
+    <clr-dg-row *ngFor="let item of vm.items">
+      <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ item.amount | currency: item.currency }}</clr-dg-cell>
+      <clr-dg-cell>{{ item.currency }}</clr-dg-cell>
+      <clr-dg-cell>{{ item.createdAt | date }}</clr-dg-cell>
+      <clr-dg-cell>{{ item.description }}</clr-dg-cell>
+      <clr-dg-cell>{{ item.status }}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+      <clr-dg-pagination
+        #pagination
+        [clrDgPageSize]="5"
+        [clrDgTotalItems]="vm.totalNumberOfItems"
+        [(clrDgPage)]="vm.currentPage"
+        (clrDgPageChange)="applyPaging($event, vm)">
+        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+        {{ pagination.totalItems }} transactions
+      </clr-dg-pagination>
+    </clr-dg-footer>
+  </clr-datagrid>
 </ng-container>

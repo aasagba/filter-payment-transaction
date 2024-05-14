@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   PaginatedAPIResponse,
   PaymentTransactionDto,
-  PaymentTransactionRequest,
+  PaymentTransactionFilter,
 } from '../models/model';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -23,19 +23,26 @@ export class PaymentApiService {
   });
 
   public getPayments(
-    request?: PaymentTransactionRequest
+    request?: PaymentTransactionFilter
   ): Observable<PaginatedAPIResponse<PaymentTransactionDto>> {
     const params = this.buildQueryParams(request);
-    return this.#httpClient.get<PaginatedAPIResponse<PaymentTransactionDto>>(
-      `${this.#url}/payments`,
-      {
-        headers: this.#headers,
-        params,
-      }
-    );
+    return this.#httpClient
+      .get<PaginatedAPIResponse<PaymentTransactionDto>>(
+        `${this.#url}/payments`,
+        {
+          headers: this.#headers,
+          params,
+        }
+      )
+      .pipe(
+        map(res => ({
+          ...res,
+          currentPage: res.currentPage + 1,
+        }))
+      );
   }
 
-  private buildQueryParams(source: PaymentTransactionRequest): HttpParams {
+  private buildQueryParams(source: PaymentTransactionFilter): HttpParams {
     let params: HttpParams = new HttpParams();
     for (const key in source) {
       params = params.append(key, source[key]);

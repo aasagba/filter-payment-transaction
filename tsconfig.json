@@ -29,5 +29,6 @@
     "strictInjectionParameters": false,
     "strictInputAccessModifiers": false,
     "strictTemplates": false
-  }
+  },
+  "exclude": ["node_modules", "tmp"]
 }

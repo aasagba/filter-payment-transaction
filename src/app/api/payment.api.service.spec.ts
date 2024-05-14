@@ -35,17 +35,21 @@ describe('PaymentApiService', () => {
 
   describe('getPayments()', () => {
     it('should construct url and call getStarWarsPeople', () => {
-      const expected: PaginatedAPIResponse<PaymentTransactionDto> =
+      const response: PaginatedAPIResponse<PaymentTransactionDto> =
         mockPaymentResponse;
+      const expected: PaginatedAPIResponse<PaymentTransactionDto> = {
+        ...response,
+        currentPage: response.currentPage + 1,
+      };
 
       let actual: PaginatedAPIResponse<PaymentTransactionDto> = null;
 
       service.getPayments().subscribe(response => (actual = response));
 
       const req = httpMock.expectOne('http://localhost:8080/api/v1/payments');
-      req.flush(expected);
-      expect(req.request.method).toBe('GET');
+      req.flush(response);
 
+      expect(req.request.method).toBe('GET');
       expect(actual).toEqual(expected);
     });
   });
