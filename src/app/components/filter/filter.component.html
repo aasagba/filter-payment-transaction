@@ -1,16 +1,57 @@
-<form [formGroup]="form">
-  <input type="date" formControlName="createdAtStart" />
-  <input type="date" formControlName="createdAtEnd" />
+<div class="container">
+  <div class="heading">
+    <h1>Payment Transactions</h1>
+  </div>
+  <form class="clr-form" [formGroup]="form">
+    <div class="clr-row">
+      <div class="clr-col">
+        <clr-input-container>
+          <label for="createdAtStart">Created (start)</label
+          ><input
+            clrInput
+            type="date"
+            formControlName="createdAtStart"
+            id="createdAtStart"
+        /></clr-input-container>
+      </div>
 
-  <select formControlName="status">
-    <option
-      *ngFor="let s of status"
-      [value]="s"
-      [selected]="s.toLocaleLowerCase">
-      {{ s.toLowerCase() }}
-    </option>
-  </select>
+      <div class="clr-col">
+        <clr-input-container
+          ><label for="createdAtEnd">Created (End)</label>
+          <input
+            clrInput
+            type="date"
+            formControlName="createdAtEnd"
+            id="createdAtEnd" />
+        </clr-input-container>
+      </div>
 
-  <button (click)="applyFiltering()">Filter</button>
-  <button (click)="resetFiltering()">Reset Filter</button>
-</form>
+      <div class="clr-col">
+        <clr-select-container>
+          <label>Status</label>
+          <select clrSelect formControlName="status">
+            <option
+              *ngFor="let s of status"
+              [value]="s"
+              [selected]="s.toLocaleLowerCase">
+              {{ s.toLowerCase() }}
+            </option>
+          </select>
+        </clr-select-container>
+      </div>
+
+      <div class="clr-col">
+        <clr-control-container>
+          <div class="btn-group btn-outline-primary">
+            <button class="btn btn-icon" (click)="applyFiltering()">
+              <cds-icon shape="filter"></cds-icon>
+            </button>
+            <button class="btn btn-icon" (click)="resetFiltering()">
+              <cds-icon shape="filter-off"></cds-icon>
+            </button>
+          </div>
+        </clr-control-container>
+      </div>
+    </div>
+  </form>
+</div>

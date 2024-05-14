@@ -1,0 +1,32 @@
+:host {
+  padding: 20px;
+  background-color: #0c0128;
+  display: flex;
+}
+
+.container {
+  width: 100%;
+
+  h1 {
+    border-bottom: 1px #2e2449 solid;
+    padding-bottom: 20px;
+    font-size: 20px;
+    margin-top: 5px;
+    color: #fdfdfd;
+  }
+  form {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+
+    clr-input-container, clr-select-container, .clr-control-container {
+      flex: 1 1 25%;
+    }
+
+    label, input, select {
+      color: #fdfdfd;
+      font-size: 15px;
+    }
+  }
+}
+
