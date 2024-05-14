@@ -1,0 +1,16 @@
+<form [formGroup]="form">
+  <input type="date" formControlName="createdAtStart" />
+  <input type="date" formControlName="createdAtEnd" />
+
+  <select formControlName="status">
+    <option
+      *ngFor="let s of status"
+      [value]="s"
+      [selected]="s.toLocaleLowerCase">
+      {{ s.toLowerCase() }}
+    </option>
+  </select>
+
+  <button (click)="applyFiltering()">Filter</button>
+  <button (click)="resetFiltering()">Reset Filter</button>
+</form>

@@ -1,3 +1,8 @@
+<app-filter
+  [status]="status"
+  (applyFilter)="onApplyFiltering($event)"
+  (resetFilter)="onResetFiltering()"></app-filter>
+
 <ng-container *ngIf="vm$ | async as vm">
   <clr-datagrid>
     <clr-dg-column *ngFor="let head of headers">{{ head }}</clr-dg-column>
