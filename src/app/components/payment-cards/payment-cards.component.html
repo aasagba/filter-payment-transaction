@@ -11,7 +11,18 @@
           <div class="heading">
             <h3>{{ transaction.id }}</h3>
           </div>
-          <div class="label label-info">
+          <div
+            class="label"
+            [ngClass]="[
+              transaction.status === 'COMPLETED' ||
+              transaction.status === 'SETTLED'
+                ? 'label-success'
+                : transaction.status === 'CREATED'
+                  ? 'label-info'
+                  : transaction.status === 'FAILED'
+                    ? 'label-danger'
+                    : 'label-warning'
+            ]">
             <div class="tag">
               {{ transaction.status }}
             </div>

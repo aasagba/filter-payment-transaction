@@ -46,13 +46,12 @@ export class AppComponent implements OnInit {
     this.isMobileBreakpoint$ = this.paymentService.isMobileBreakpoint$;
   }
 
-  applyPaging(page: number, vm: VM) {
-    if (vm.pagination.hasNext)
-      this.paymentService.filter$.next({
-        ...this.paymentService.filter$.value,
-        page: page - 1,
-        size: PAGINATION_DEFAULT_SIZE,
-      });
+  applyPaging(page: number) {
+    this.paymentService.filter$.next({
+      ...this.paymentService.filter$.value,
+      page: page - 1,
+      size: PAGINATION_DEFAULT_SIZE,
+    });
   }
 
   onApplyFiltering(form: FormGroup) {

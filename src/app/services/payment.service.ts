@@ -65,12 +65,16 @@ export class PaymentService {
   private updatePages(accumulator: VM, value: VM): VM {
     accumulator.items = value.items;
 
+    const limitReached =
+      accumulator.infinityItems.length + value.items.length >
+      value.pagination.totalNumberOfItems;
+
     if (this.processingFiltering$.value)
       accumulator.infinityItems = [...value.items];
     else
       accumulator.infinityItems = [
         ...accumulator.infinityItems,
-        ...value.items,
+        ...(limitReached ? [] : [...value.items]),
       ];
 
     accumulator.pagination.currentPage = value.pagination.currentPage;

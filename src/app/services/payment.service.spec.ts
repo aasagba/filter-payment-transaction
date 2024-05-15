@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-
 import { PaymentService } from './payment.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
-import { defaultFilter } from '../models/model';
 import { PaymentApiService } from '../api/payment.api.service';
-import { mockPaymentResponse } from '../api/payment.mock';
+import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+  mockPaymentItems,
+  mockPaymentItemsPage1,
+  mockPaymentPage1Response,
+  mockPaymentResponse,
+} from '../api/payment.mock';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -18,7 +21,10 @@ describe('PaymentService', () => {
         {
           provide: PaymentApiService,
           useValue: {
-            getPayments: jest.fn(() => of(mockPaymentResponse)),
+            getPayments: jest
+              .fn()
+              .mockReturnValueOnce(of(mockPaymentResponse))
+              .mockReturnValueOnce(of(mockPaymentPage1Response)),
           },
         },
       ],
@@ -30,15 +36,37 @@ describe('PaymentService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return stream of payment transactions', () => {
-    service.filter$.next(defaultFilter);
-    const expected = mockPaymentResponse;
-    expected.currentPage = 1;
+  describe('getPaymentTransactions', () => {
+    it('should set items after filter event', done => {
+      service.filter$.next({ page: 0, size: 2 });
 
-    service.getPaymentTransactions().subscribe(response => {
-      expect(response).toBeTruthy();
-      expect(response.pagination.currentPage).toEqual(1);
-      expect(response).toEqual(expected);
+      service.getPaymentTransactions().subscribe(response => {
+        expect(response.items).toEqual(mockPaymentItems);
+
+        done();
+      });
+    });
+
+    it('should accumulate infinity items after two filter events', done => {
+      // Trigger the first filter event
+      service.filter$.next({ page: 0, size: 2 });
+
+      // Trigger the filter changes and capture responses
+      service.getPaymentTransactions().subscribe(response => {
+        if (response.pagination.currentPage === 0) {
+          expect(response.infinityItems).toEqual(mockPaymentItems);
+
+          // Trigger the second filter event
+          service.filter$.next({ page: 1, size: 2 });
+        } else if (response.pagination.currentPage === 1) {
+          expect(response.infinityItems).toEqual([
+            ...mockPaymentItems,
+            ...mockPaymentItemsPage1,
+          ]);
+
+          done();
+        }
+      });
     });
   });
 });
