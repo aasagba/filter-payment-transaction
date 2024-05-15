@@ -73,6 +73,6 @@ export class AppComponent implements OnInit {
 
   onInfinityScrollFired(vm: VM) {
     const currentPage = this.paymentService.filter$.value?.page ?? 0;
-    if (vm.pagination.hasNext) this.applyPaging(currentPage + 2, vm);
+    if (vm.pagination.hasNext) this.applyPaging(currentPage + 2);
   }
 }
